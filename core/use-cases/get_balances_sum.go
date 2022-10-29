@@ -1,14 +1,14 @@
-package main
+package core
 
 type BalanceProvider interface {
-	getEtherBalance(string) (int, error)
+	GetEtherBalance(string) (int, error)
 }
 
-func getBalancesSum(addresses []string, balanceProvider BalanceProvider) (int, error) {
+func GetBalancesSum(addresses []string, balanceProvider BalanceProvider) (int, error) {
 	var balanceTtl = 0
 
 	for _, address := range addresses {
-		var balance, err = balanceProvider.getEtherBalance(address)
+		var balance, err = balanceProvider.GetEtherBalance(address)
 
 		if err != nil {
 			return 0, err
