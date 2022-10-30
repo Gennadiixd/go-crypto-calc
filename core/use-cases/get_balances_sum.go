@@ -9,7 +9,7 @@ type BalanceProvider interface {
 }
 
 func GetBalancesSum(addresses []string, balanceProvider BalanceProvider) (float64, error) {
-	var balances, err = batcher.Batcher(addresses, balanceProvider.GetEtherBalance, 5)
+	var balances, err = batcher.Batcher(addresses, balanceProvider.GetEtherBalance, 2)
 	if err != nil {
 		panic(err)
 	}

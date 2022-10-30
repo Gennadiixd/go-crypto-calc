@@ -1,8 +1,10 @@
 package batcher
 
 import (
+	"fmt"
 	"math"
 	"sync"
+	"time"
 )
 
 func Batcher[T, U any](args []T, fn func(T) (U, error), maxBatchSize int) ([]U, error) {
@@ -12,7 +14,9 @@ func Batcher[T, U any](args []T, fn func(T) (U, error), maxBatchSize int) ([]U, 
 	argsAmount := len(args)
 	batchAmount := int(math.Ceil(float64(argsAmount / maxBatchSize)))
 
-	for i := 0; i <= batchAmount; i++ {
+	for i := 0; i < batchAmount; i++ {
+		timer := time.NewTimer(3 * time.Second)
+
 		lowerBound := skip
 		upperBound := skip + maxBatchSize
 
@@ -35,11 +39,15 @@ func Batcher[T, U any](args []T, fn func(T) (U, error), maxBatchSize int) ([]U, 
 				if err != nil {
 					panic(err)
 				}
+				fmt.Println(result)
+				results[idx+i] = result
 
-				results[idx] = result
 			}(batchItems[idx], idx)
 		}
 
+		<-timer.C
+
+		fmt.Println("Batch done")
 		itemProcessingGroup.Wait()
 	}
 
