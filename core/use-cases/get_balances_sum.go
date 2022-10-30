@@ -1,21 +1,24 @@
 package core
 
+import (
+	"crypto-calc/packages/batcher"
+)
+
 type BalanceProvider interface {
-	GetEtherBalance(string) (int, error)
+	GetEtherBalance(string) (float64, error)
 }
 
-func GetBalancesSum(addresses []string, balanceProvider BalanceProvider) (int, error) {
-	var balanceTtl = 0
-
-	for _, address := range addresses {
-		var balance, err = balanceProvider.GetEtherBalance(address)
-
-		if err != nil {
-			return 0, err
-		}
-
-		balanceTtl = balanceTtl + balance
+func GetBalancesSum(addresses []string, balanceProvider BalanceProvider) (float64, error) {
+	var balances, err = batcher.Batcher(addresses, balanceProvider.GetEtherBalance, 5)
+	if err != nil {
+		panic(err)
 	}
 
-	return balanceTtl, nil
+	var result float64
+
+	for _, balance := range balances {
+		result = result + balance
+	}
+
+	return result, nil
 }
