@@ -46,9 +46,9 @@ func Batcher[T, U any](args []T, fn func(T) (U, error), maxBatchSize int) ([]U, 
 		}
 
 		<-timer.C
+		itemProcessingGroup.Wait()
 
 		fmt.Println("Batch done")
-		itemProcessingGroup.Wait()
 	}
 
 	return results, nil
