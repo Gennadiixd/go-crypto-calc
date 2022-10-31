@@ -7,7 +7,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var providerName = os.Args[1]
+var providerName = os.Args[3]
 
 func getEnvOrThrow(key string) string {
 	err := godotenv.Load(providerName + ".env")
