@@ -9,8 +9,8 @@ type BalanceProvider interface {
 }
 
 func GetBalancesSum(addresses []string, balanceProvider BalanceProvider, numRequestsInParallel int, rateLimit int) (float64, error) {
-	// var balances, err = batcher.Batcher(addresses, balanceProvider.GetEtherBalance, 2)
-	var balances, err = ratelimiter.Ratelimiter(addresses, balanceProvider.GetEtherBalance, numRequestsInParallel, rateLimit)
+	var getEtherBalanceLimited = ratelimiter.TimeLimiter(balanceProvider.GetEtherBalance, rateLimit)
+	var balances, err = ratelimiter.Ratelimiter(addresses, getEtherBalanceLimited, numRequestsInParallel, rateLimit)
 	if err != nil {
 		panic(err)
 	}
