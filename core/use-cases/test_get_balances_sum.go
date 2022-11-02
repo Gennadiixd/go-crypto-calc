@@ -1,4 +1,4 @@
-package main
+package core
 
 import (
 	"testing"
@@ -10,9 +10,9 @@ type BalanceProviderMock struct {
 	mock.Mock
 }
 
-func (b BalanceProviderMock) getEtherBalance(address string) (int, error) {
+func (b BalanceProviderMock) GetEtherBalance(address string) (float64, error) {
 	args := b.Called()
-	balance := 44
+	var balance float64 = 44
 	return balance, args.Error(1)
 }
 
@@ -22,7 +22,7 @@ func TestCli(t *testing.T) {
 	balanceProvider := BalanceProviderMock{}
 	balanceProvider.On("GetEtherBalance").Return(10, nil)
 
-	getBalancesSum(addresses, balanceProvider)
+	GetBalancesSum(addresses, balanceProvider, 3, 2)
 
 	balanceProvider.AssertCalled(t, "GetEtherBalance", "0xab5801a7d398351b8be11c439e05c5b3259aec9b")
 	balanceProvider.AssertCalled(t, "GetEtherBalance", "0xCb235D0dc69E8D085b4179c77E7981D1B9D90ACA")
