@@ -1,10 +1,10 @@
 #!make
 
 run-infura:
-	go run crypto-calc infura
+	go run cmd/main.go infura
 
 run-etherscan:
-	go run crypto-calc  --parallelism=3 --rate-limit=1 --provider=etherscan
+	go run cmd/main.go  --parallelism=3 --rate-limit=1 --providerName=etherscan
 
 test:
 	go test -v
