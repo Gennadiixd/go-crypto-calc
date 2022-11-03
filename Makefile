@@ -1,10 +1,14 @@
 #!make
 
-run-infura:
-	go run cmd/main.go infura
+run-cli-infura:
+	go run cmd/cli/main.go infura
 
-run-etherscan:
-	go run cmd/main.go  --parallelism=3 --rate-limit=1 --providerName=etherscan
+run-cli-etherscan:
+	go run cmd/cli/main.go  --parallelism=3 --rate-limit=1 --providerName=etherscan
+
+run-http-etherscan:
+	go run cmd/http/main.go  --parallelism=3 --rate-limit=1 --providerName=etherscan
+
 
 test:
 	go test -v
